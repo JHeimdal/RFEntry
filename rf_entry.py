@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from rf_entry_ui import Ui_RF_Entry
 import sys
-import os
+# import os
 
 # Member class
 
