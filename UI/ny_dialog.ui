@@ -32,22 +32,22 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="grupp">
+       <item row="8" column="0">
+        <widget class="QLabel" name="grupp_lb">
          <property name="text">
           <string>Grupp:</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="kommentar">
+       <item row="10" column="0">
+        <widget class="QLabel" name="kommentar_lb">
          <property name="text">
           <string>Kommentar:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QComboBox" name="group_val">
+       <item row="8" column="1">
+        <widget class="QComboBox" name="group">
          <property name="currentText">
           <string/>
          </property>
@@ -82,59 +82,59 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="ID_label">
+        <widget class="QLabel" name="ID_lb">
          <property name="text">
           <string>ID:</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="ID_show">
+        <widget class="QLabel" name="ID_val">
          <property name="text">
           <string>None</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="Betalt">
+       <item row="9" column="0">
+        <widget class="QLabel" name="Betalt_lb">
          <property name="text">
           <string>Betalt:</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
-        <widget class="QRadioButton" name="radioButton">
+       <item row="9" column="1">
+        <widget class="QRadioButton" name="betalt">
          <property name="text">
           <string>Ja</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="1">
-        <widget class="QTextEdit" name="textEdit"/>
+       <item row="10" column="1">
+        <widget class="QTextEdit" name="kommentar"/>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="adress">
+       <item row="5" column="0">
+        <widget class="QLabel" name="adress_lb">
          <property name="text">
           <string>Adress:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="lineEdit_2">
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="adress">
          <property name="placeholderText">
           <string>Tellusgatan 15</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="postnum">
+       <item row="6" column="0">
+        <widget class="QLabel" name="postnum_lb">
          <property name="text">
           <string>Postnummer:</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="lineEdit_3">
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="post_num">
          <property name="autoFillBackground">
           <bool>false</bool>
          </property>
@@ -144,30 +144,73 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="pers_num">
+        <widget class="QLabel" name="pers_num_lb">
          <property name="text">
           <string>Personnummer:</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit_4">
+        <widget class="QLineEdit" name="pers_num">
          <property name="placeholderText">
           <string>xxxxxx-xxxx</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label">
+       <item row="7" column="0">
+        <widget class="QLabel" name="ort_lb">
          <property name="text">
           <string>Ort:</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="lineEdit">
+       <item row="7" column="1">
+        <widget class="QLineEdit" name="ort">
          <property name="placeholderText">
           <string>Lund</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="kon_lb">
+         <property name="text">
+          <string>Kön:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="kon">
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>Man</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Kvinna</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Okänd</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="email_lb">
+         <property name="text">
+          <string>Email:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="email">
+         <property name="placeholderText">
+          <string>någon@email.se</string>
          </property>
         </widget>
        </item>
@@ -187,6 +230,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>namn</tabstop>
+  <tabstop>pers_num</tabstop>
+  <tabstop>kon</tabstop>
+  <tabstop>email</tabstop>
+  <tabstop>adress</tabstop>
+  <tabstop>post_num</tabstop>
+  <tabstop>ort</tabstop>
+  <tabstop>group</tabstop>
+  <tabstop>betalt</tabstop>
+  <tabstop>kommentar</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
