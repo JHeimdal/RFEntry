@@ -148,11 +148,11 @@ class MembersDB:
 
     def setPaid(self, ID, bet='Nej'):
         if bet == 'Nej':
-            val = False
+            val = 0
         elif bet == 'Ja':
-            val = True
+            val = 1
         else:
-            val = False
+            val = 0
         sql = """UPDATE members
                  SET betalt={1}
                  WHERE ID={0}""".format(ID, val)
@@ -191,7 +191,7 @@ class AddMember(QtWidgets.QDialog):
         postnum = self.ui.post_num.text()
         ort = self.ui.ort.text()
         grupp = self.ui.group.currentText()
-        betalt = self.ui.betalt.isChecked()
+        betalt = int(self.ui.betalt.isChecked())
         kommentar = self.ui.kommentar.toPlainText()
 
         return {'ID':self.ID, 'namn':namn, 'persnum':persnum, 'kon':kon,
