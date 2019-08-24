@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'rf_entry.ui'
+# Form implementation generated from reading ui file 'UI/rf_entry.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -46,7 +46,9 @@ class Ui_RF_Entry(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
-        self.startButton.setCheckable(True)
+        self.startButton.setToolTipDuration(-1)
+        self.startButton.setCheckable(False)
+        self.startButton.setChecked(False)
         self.startButton.setObjectName("startButton")
         self.horizontalLayout.addWidget(self.startButton)
         self.line = QtWidgets.QFrame(self.centralwidget)
@@ -54,6 +56,20 @@ class Ui_RF_Entry(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.horizontalLayout.addWidget(self.line)
+        self.tgroup = QtWidgets.QComboBox(self.centralwidget)
+        self.tgroup.setToolTipDuration(-1)
+        self.tgroup.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.tgroup.setObjectName("tgroup")
+        self.tgroup.addItem("")
+        self.tgroup.addItem("")
+        self.tgroup.addItem("")
+        self.tgroup.addItem("")
+        self.horizontalLayout.addWidget(self.tgroup)
+        self.sep_line = QtWidgets.QFrame(self.centralwidget)
+        self.sep_line.setFrameShape(QtWidgets.QFrame.VLine)
+        self.sep_line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.sep_line.setObjectName("sep_line")
+        self.horizontalLayout.addWidget(self.sep_line)
         self.clearButton = QtWidgets.QPushButton(self.centralwidget)
         self.clearButton.setObjectName("clearButton")
         self.horizontalLayout.addWidget(self.clearButton)
@@ -82,6 +98,7 @@ class Ui_RF_Entry(object):
         self.menubar.addAction(self.menuMeny.menuAction())
 
         self.retranslateUi(RF_Entry)
+        self.tgroup.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(RF_Entry)
 
     def retranslateUi(self, RF_Entry):
@@ -93,7 +110,13 @@ class Ui_RF_Entry(object):
         item.setText(_translate("RF_Entry", "Betalt"))
         item = self.reportWindow.horizontalHeaderItem(2)
         item.setText(_translate("RF_Entry", "Namn"))
+        self.startButton.setToolTip(_translate("RF_Entry", "Starta loggningen för vald grupp"))
         self.startButton.setText(_translate("RF_Entry", "Start"))
+        self.tgroup.setToolTip(_translate("RF_Entry", "Vilken grupp skall träna? "))
+        self.tgroup.setItemText(0, _translate("RF_Entry", "Basic"))
+        self.tgroup.setItemText(1, _translate("RF_Entry", "Intermidiate"))
+        self.tgroup.setItemText(2, _translate("RF_Entry", "Advanced"))
+        self.tgroup.setItemText(3, _translate("RF_Entry", "Barn"))
         self.clearButton.setText(_translate("RF_Entry", "Clear Log"))
         self.menuMeny.setTitle(_translate("RF_Entry", "Meny"))
         self.actionExport_CSV.setText(_translate("RF_Entry", "Export CSV"))
