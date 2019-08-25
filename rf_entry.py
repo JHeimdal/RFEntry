@@ -3,35 +3,20 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtWidgets import QMessageBox as QMB
 from rf_entry_ui import Ui_RF_Entry
 from ny_dialog_ui import Ui_NyMedlem
-from bet_dialog_ui import Ui_Betalat
+# from bet_dialog_ui import Ui_Betalat
 import serial
-import datetime as dt
+# import datetime as dt
 from serial.serialutil import SerialException
 import sqlite3
 
 import sys
+
 # import os
-
-# Member class
-class Member:
-    def __init__(self):
-        self.name = None
-        self.pernum = None
-        self.adress = None
-        self.postnum = None
-        self.ort = None
-        self.group = None
-        self.payed = False
-        self.ID = None
-        self.comment = None
-
-# Add/Edit Member dialog separate Thread
-
 # Export CSV dialog
-
 # Settings dialog
-
 # Bar Scanner Thread
+
+
 class BarReader(QtCore.QThread):
     code = QtCore.pyqtSignal(int)
 
@@ -70,6 +55,8 @@ class BarReader(QtCore.QThread):
                 except ValueError:
                     # Handle
                     pass
+
+
 # DataBase thread
 class MembersDB:
     def __init__(self, members_db=None):
@@ -100,18 +87,16 @@ class MembersDB:
                 pass);""")
         self.conn_V.commit()
 
-
     def logVisit(self, ID, tpass):
         sql = """
         INSERT INTO visits (ID,pass)
         VALUES ({},'{}')
-        """.format(ID,tpass)
+        """.format(ID, tpass)
         self.curs_V.execute(sql)
         self.conn_V.commit()
 
         sql = "SELECT namn, grupp, betalt FROM members where ID={}".format(ID)
         return self.curs_M.execute(sql).fetchone()[0:3]
-
 
     def addMember(self, member=None):
         if member:
@@ -135,7 +120,7 @@ class MembersDB:
     def isMember(self, ID):
         sql = "select exists(select 1 from members where ID={}) limit 1".format(ID)
         ret = self.curs_M.execute(sql)
-        if ret.fetchone()[0]==0:
+        if ret.fetchone()[0] == 0:
             return False
         else:
             return True
@@ -144,7 +129,7 @@ class MembersDB:
         sql = "SELECT namn,persnum,kon,email,adress,postnum,ort,grupp,betalt,kommentar FROM members where ID={}".format(ID)
         keys = ['namn','persnum','kon','email','adress','postnum','ort','grupp','betalt','kommentar']
         val = self.curs_M.execute(sql).fetchone()
-        return dict( zip(keys, val) )
+        return dict(zip(keys, val))
 
     def setPaid(self, ID, bet='Nej'):
         if bet == 'Nej':
@@ -181,7 +166,6 @@ class AddMember(QtWidgets.QDialog):
             self.ui.betalt.setChecked(member['betalt'])
             self.ui.kommentar.setText(member['kommentar'])
 
-
     def getMember(self):
         namn = self.ui.namn.text()
         persnum = self.ui.pers_num.text()
@@ -194,9 +178,10 @@ class AddMember(QtWidgets.QDialog):
         betalt = int(self.ui.betalt.isChecked())
         kommentar = self.ui.kommentar.toPlainText()
 
-        return {'ID':self.ID, 'namn':namn, 'persnum':persnum, 'kon':kon,
-                'email':email, 'adress':adress, 'postnum':postnum, 'ort':ort,
-                'grupp':grupp, 'betalt':betalt, 'kommentar':kommentar}
+        return {'ID': self.ID, 'namn': namn, 'persnum': persnum, 'kon': kon,
+                'email': email, 'adress': adress, 'postnum': postnum, 'ort': ort,
+                'grupp': grupp, 'betalt': betalt, 'kommentar': kommentar}
+
 
 class RF_Entry(QtWidgets.QMainWindow):
     def __init__(self):
@@ -222,7 +207,7 @@ class RF_Entry(QtWidgets.QMainWindow):
 
     def ClearLog(self):
         """ Clear the entire log """
-        while( self.ui.reportWindow.rowCount() != 0 ):
+        while(self.ui.reportWindow.rowCount() != 0):
             self.ui.reportWindow.removeRow(0)
 
     def OnCell(self, r, c):
@@ -230,14 +215,14 @@ class RF_Entry(QtWidgets.QMainWindow):
         member = self.memberDB.fetchMember(ID)
         if c == 1:
             # Dialog fråga om betalat
-            diag = QMB.question(self,"Betalat?","Har {} betalat?".format(member['namn']),
+            diag = QMB.question(self, "Betalat?", "Har {} betalat?".format(member['namn']),
                                 QMB.Yes | QMB.No, QMB.Yes)
             if diag == QMB.Yes:
-                self.ui.reportWindow.setItem(r,c,QTableWidgetItem("Ja"))
-                self.memberDB.setPaid(ID,'Ja')
+                self.ui.reportWindow.setItem(r, c, QTableWidgetItem("Ja"))
+                self.memberDB.setPaid(ID, 'Ja')
             else:
-                self.ui.reportWindow.setItem(r,c,QTableWidgetItem("Nej"))
-                self.memberDB.setPaid(ID,'Nej')
+                self.ui.reportWindow.setItem(r, c, QTableWidgetItem("Nej"))
+                self.memberDB.setPaid(ID, 'Nej')
         elif c == 2:
             diag = AddMember(ID, member)
             if diag.exec_():
@@ -280,7 +265,7 @@ class RF_Entry(QtWidgets.QMainWindow):
     def OnCode(self, code):
         if self.memberDB.isMember(code):
             tpass = self.ui.tgroup.currentText()
-            n, g, b = self.memberDB.logVisit(code,tpass)
+            n, g, b = self.memberDB.logVisit(code, tpass)
             if b:
                 bet = "Ja"
             else:
@@ -288,9 +273,9 @@ class RF_Entry(QtWidgets.QMainWindow):
             row = self.ui.reportWindow.rowCount()
             self.ui.reportWindow.insertRow(row)
             self.ui.reportWindow.setVerticalHeaderItem(row, QTableWidgetItem(str(code)))
-            self.ui.reportWindow.setItem(row,0,QTableWidgetItem(g))
-            self.ui.reportWindow.setItem(row,1,QTableWidgetItem(bet))
-            self.ui.reportWindow.setItem(row,2,QTableWidgetItem(n))
+            self.ui.reportWindow.setItem(row, 0, QTableWidgetItem(g))
+            self.ui.reportWindow.setItem(row, 1, QTableWidgetItem(bet))
+            self.ui.reportWindow.setItem(row, 2, QTableWidgetItem(n))
             # ret = self.memberDB.logVisit(code)
         else:
             diag = AddMember(code)
