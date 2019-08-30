@@ -10,7 +10,7 @@ import serial
 # import datetime as dt
 from serial.serialutil import SerialException
 import sqlite3
-
+import time
 import sys
 
 # import os
@@ -32,8 +32,14 @@ class BarReader(QtCore.QThread):
             self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1,
                                      parity=serial.PARITY_EVEN, rtscts=1,
                                      bytesize=8)
+            return True
         except SerialException as err:
-            pass
+            if err.errno==2:
+                print("Cant connect to {}".format(err.strerror))
+                sys.exit(99)
+            elif err.errno==16:
+                print("Device  busy, try again")
+                return False
 
     def __del__(self):
         if self.ser:
@@ -47,7 +53,8 @@ class BarReader(QtCore.QThread):
 
     def run(self):
         self.done = False
-        self.connect()
+        while(not self.connect()):
+            time.sleep(2)
         self.ser.flush()
         while not self.done:
             val = self.ser.readline()
@@ -291,8 +298,6 @@ class RF_Entry(QtWidgets.QMainWindow):
             if diag.exec_():
                 member = diag.getMember()
                 self.memberDB.addMember(member)
-            else:
-                print("E")
 
     def OnQuit(self):
         self.memberDB.conn_M.commit()
