@@ -195,7 +195,7 @@ class RF_Entry(QtWidgets.QMainWindow):
 
         # Connections
         self.ui.startButton.clicked.connect(self.StartLog)
-        self.ui.clearButton.clicked.connect(self.ClearLog)
+        # self.ui.clearButton.clicked.connect(self.ClearLog)
         self.ui.tgroup.currentIndexChanged.connect(self.OnGroup)
         self.ui.actionQuit.triggered.connect(self.OnQuit)
         self.ui.reportWindow.cellDoubleClicked.connect(self.OnCell)
@@ -203,6 +203,7 @@ class RF_Entry(QtWidgets.QMainWindow):
         # Start Members class and Visitor class
 
     def OnGroup(self):
+
         self.ui.startButton.setEnabled(True)
 
     def ClearLog(self):
@@ -228,18 +229,23 @@ class RF_Entry(QtWidgets.QMainWindow):
             if diag.exec_():
                 mber = diag.getMember()
                 self.memberDB.updateMember(mber)
-                # Updatera Cellen
+                self.ui.reportWindow.setItem(r, 0, QTableWidgetItem(mber['grupp']))
+                self.ui.reportWindow.setItem(r, 1, QTableWidgetItem("Ja" if mber['betalt'] else "Nej"))
+                self.ui.reportWindow.setItem(r, 2, QTableWidgetItem(mber['namn']))
         else:
             # Ingen funktion
             pass
 
     def StartLog(self):
+        # This happens on start
         if self.ui.startButton.text() == "Start":
+            self.ClearLog()
             self.ui.startButton.setText("Stop")
             self.ui.startButton.setStyleSheet('background-color: red')
             self.ui.tgroup.setDisabled(True)
             # Launch BarReader
             self.barReader.start()
+        # This hapens when stop
         else:
             self.ui.startButton.setText("Start")
             self.ui.startButton.setStyleSheet('background-color: lightgray')
@@ -264,17 +270,18 @@ class RF_Entry(QtWidgets.QMainWindow):
 
     def OnCode(self, code):
         if self.memberDB.isMember(code):
+            IDS=[]
+            for row in range(self.ui.reportWindow.rowCount()):
+                IDS.append(int(self.ui.reportWindow.verticalHeaderItem(row).text()))
+            if code in IDS:
+                return
             tpass = self.ui.tgroup.currentText()
             n, g, b = self.memberDB.logVisit(code, tpass)
-            if b:
-                bet = "Ja"
-            else:
-                bet = "Nej"
             row = self.ui.reportWindow.rowCount()
             self.ui.reportWindow.insertRow(row)
             self.ui.reportWindow.setVerticalHeaderItem(row, QTableWidgetItem(str(code)))
             self.ui.reportWindow.setItem(row, 0, QTableWidgetItem(g))
-            self.ui.reportWindow.setItem(row, 1, QTableWidgetItem(bet))
+            self.ui.reportWindow.setItem(row, 1, QTableWidgetItem("Ja" if b else "Nej"))
             self.ui.reportWindow.setItem(row, 2, QTableWidgetItem(n))
             # ret = self.memberDB.logVisit(code)
         else:
