@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
-    <height>563</height>
+    <width>658</width>
+    <height>778</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,69 +18,6 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QFormLayout" name="formLayout">
-       <item row="1" column="0">
-        <widget class="QLabel" name="namn_id">
-         <property name="text">
-          <string>Namn:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="namn">
-         <property name="placeholderText">
-          <string>Namn Efternamn</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="grupp_lb">
-         <property name="text">
-          <string>Grupp:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="kommentar_lb">
-         <property name="text">
-          <string>Kommentar:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QComboBox" name="group">
-         <property name="currentText">
-          <string/>
-         </property>
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>Basic</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Intermidiate</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Advanced</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Kids</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Tävling</string>
-          </property>
-         </item>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="ID_lb">
          <property name="text">
@@ -95,51 +32,17 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="Betalt_lb">
+       <item row="1" column="0">
+        <widget class="QLabel" name="namn_id">
          <property name="text">
-          <string>Betalt:</string>
+          <string>Namn:</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
-        <widget class="QRadioButton" name="betalt">
-         <property name="text">
-          <string>Ja</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QTextEdit" name="kommentar"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="adress_lb">
-         <property name="text">
-          <string>Adress:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="adress">
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="namn">
          <property name="placeholderText">
-          <string>Tellusgatan 15</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="postnum_lb">
-         <property name="text">
-          <string>Postnummer:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="post_num">
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="placeholderText">
-          <string>224 57</string>
+          <string>Namn Efternamn</string>
          </property>
         </widget>
        </item>
@@ -152,22 +55,11 @@
        </item>
        <item row="2" column="1">
         <widget class="QLineEdit" name="pers_num">
-         <property name="placeholderText">
-          <string>xxxxxx-xxxx</string>
+         <property name="inputMask">
+          <string>99999999-9999</string>
          </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="ort_lb">
-         <property name="text">
-          <string>Ort:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="ort">
          <property name="placeholderText">
-          <string>Lund</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -214,7 +106,179 @@
          </property>
         </widget>
        </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="adress_lb">
+         <property name="text">
+          <string>Adress:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="adress">
+         <property name="placeholderText">
+          <string>Tellusgatan 15</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="postnum_lb">
+         <property name="text">
+          <string>Postnummer:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLineEdit" name="post_num">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="inputMask">
+          <string>999 99</string>
+         </property>
+         <property name="placeholderText">
+          <string>224 57</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="ort_lb">
+         <property name="text">
+          <string>Ort:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="ort">
+         <property name="placeholderText">
+          <string>Lund</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="grupp_lb">
+         <property name="text">
+          <string>Grupp:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="group">
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>Basic</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Intermidiate</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Advanced</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Kids</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Tävling</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="Betalt_lb">
+         <property name="text">
+          <string>Betalt:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QRadioButton" name="betalt">
+         <property name="text">
+          <string>Ja</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="kommentar_lb">
+         <property name="text">
+          <string>Kommentar:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QTextEdit" name="kommentar"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Telefon:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="malsman">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="title">
+        <string>Målsman</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="namnlb_mm">
+          <property name="text">
+           <string>Namn:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="namn_mm"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="emaillb_mm">
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="email_mm"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="telefonlb_mm">
+          <property name="text">
+           <string>Telefon:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="telefon_mm"/>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
@@ -235,11 +299,15 @@
   <tabstop>pers_num</tabstop>
   <tabstop>kon</tabstop>
   <tabstop>email</tabstop>
+  <tabstop>lineEdit</tabstop>
   <tabstop>adress</tabstop>
   <tabstop>post_num</tabstop>
   <tabstop>ort</tabstop>
   <tabstop>group</tabstop>
   <tabstop>betalt</tabstop>
+  <tabstop>namn_mm</tabstop>
+  <tabstop>email_mm</tabstop>
+  <tabstop>telefon_mm</tabstop>
   <tabstop>kommentar</tabstop>
  </tabstops>
  <resources/>

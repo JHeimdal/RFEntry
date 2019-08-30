@@ -7,7 +7,7 @@ from rf_entry_ui import Ui_RF_Entry
 from ny_dialog_ui import Ui_NyMedlem
 # from bet_dialog_ui import Ui_Betalat
 import serial
-# import datetime as dt
+import datetime as dt
 from serial.serialutil import SerialException
 import sqlite3
 import time
@@ -80,12 +80,16 @@ class MembersDB:
                 persnum,
                 kon,
                 email,
+                telefon,
                 adress,
                 postnum,
                 ort,
                 grupp,
                 betalt BIT,
-                kommentar);""")
+                kommentar,
+                namn_mm,
+                email_mm,
+                telefon_mm);""")
         self.conn_M.commit()
         self.conn_V = sqlite3.connect("visits.db")
         self.curs_V = self.conn_V.cursor()
@@ -161,6 +165,7 @@ class AddMember(QtWidgets.QDialog):
         self.ui.setupUi(self)
         self.ui.ID_val.setText(str(ID))
         self.ID = ID
+        self.ui.pers_num.editingFinished.connect(self.checkAge)
         if member:
             self.ui.namn.setText(member['namn'])
             self.ui.pers_num.setText(member['persnum'])
@@ -174,6 +179,16 @@ class AddMember(QtWidgets.QDialog):
             self.ui.group.setCurrentIndex(idx)
             self.ui.betalt.setChecked(member['betalt'])
             self.ui.kommentar.setText(member['kommentar'])
+
+    def checkAge(self):
+        bday = dt.datetime.strptime(self.ui.pers_num.text().split('-')[0],"%Y%m%d")
+        tday = dt.datetime.today()
+        age = int((tday-bday).days/365)
+        if age < 18:
+            self.ui.malsman.setEnabled(True)
+        else:
+            self.ui.malsman.setDisabled(True)
+
 
     def getMember(self):
         namn = self.ui.namn.text()
@@ -212,7 +227,6 @@ class RF_Entry(QtWidgets.QMainWindow):
         # Start Members class and Visitor class
 
     def OnGroup(self):
-
         self.ui.startButton.setEnabled(True)
 
     def ClearLog(self):
