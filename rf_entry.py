@@ -114,8 +114,8 @@ class MembersDB:
     def addMember(self, member=None):
         if member:
             sql = """
-            INSERT INTO members (ID,namn,persnum,kon,email,adress,postnum,ort,grupp,betalt,kommentar)
-            VALUES ({ID},'{namn}','{persnum}','{kon}','{email}','{adress}','{postnum}','{ort}','{grupp}',{betalt},'{kommentar}');
+            INSERT INTO members (ID,namn,persnum,kon,email,adress,postnum,ort,grupp,betalt,kommentar,namn_mm,email_mm,telefon_mm)
+            VALUES ({ID},'{namn}','{persnum}','{kon}','{email}','{adress}','{postnum}','{ort}','{grupp}',{betalt},'{kommentar}','{namn_mm}','{email_mm}','{telefon_mm}');
             """.format(**member)
             self.curs_M.execute(sql)
             self.conn_M.commit()
@@ -124,7 +124,7 @@ class MembersDB:
         if member:
             sql = """
             UPDATE members
-            SET namn='{namn}',persnum='{persnum}',kon='{kon}',email='{email}',adress='{adress}',postnum='{postnum}',ort='{ort}',grupp='{grupp}',betalt={betalt},kommentar='{kommentar}'
+            SET namn='{namn}',persnum='{persnum}',kon='{kon}',email='{email}',telefon='{telefon}',adress='{adress}',postnum='{postnum}',ort='{ort}',grupp='{grupp}',betalt={betalt},kommentar='{kommentar},namn_mm='{namn_mm}',email_mm='{email_mm}',telefon_mm='{telefon_mm}'
             WHERE ID={ID};
             """.format(**member)
             self.curs_M.execute(sql)
@@ -139,8 +139,8 @@ class MembersDB:
             return True
 
     def fetchMember(self, ID):
-        sql = "SELECT namn,persnum,kon,email,adress,postnum,ort,grupp,betalt,kommentar FROM members where ID={}".format(ID)
-        keys = ['namn','persnum','kon','email','adress','postnum','ort','grupp','betalt','kommentar']
+        sql = "SELECT namn,persnum,kon,email,telefon,adress,postnum,ort,grupp,betalt,kommentar namn_mm email_mm telefon_mm FROM members where ID={}".format(ID)
+        keys = ['namn','persnum','kon','email','telefon','adress','postnum','ort','grupp','betalt','kommentar','namn_mm','email_mm','telefon_mm']
         val = self.curs_M.execute(sql).fetchone()
         return dict(zip(keys, val))
 
@@ -179,6 +179,10 @@ class AddMember(QtWidgets.QDialog):
             self.ui.group.setCurrentIndex(idx)
             self.ui.betalt.setChecked(member['betalt'])
             self.ui.kommentar.setText(member['kommentar'])
+            if member['namn_mm']:
+                self.ui.namn_mm.setText(member['namn_mm'])
+                self.ui.email_mm.setText(member['email_mm'])
+                self.ui.telefon_mm.setText(member['telefon_mm'])
 
     def checkAge(self):
         bday = dt.datetime.strptime(self.ui.pers_num.text().split('-')[0],"%Y%m%d")
@@ -195,16 +199,22 @@ class AddMember(QtWidgets.QDialog):
         persnum = self.ui.pers_num.text()
         kon = self.ui.kon.currentText()
         email = self.ui.email.text()
+        telefon = self.ui.telefon.text()
         adress = self.ui.adress.text()
         postnum = self.ui.post_num.text()
         ort = self.ui.ort.text()
         grupp = self.ui.group.currentText()
         betalt = int(self.ui.betalt.isChecked())
         kommentar = self.ui.kommentar.toPlainText()
+        namn_mm = self.ui.namn_mm.text()
+        email_mm = self.ui.email_mm.text()
+        telefon_mm = self.ui.telefon_mm.text()
 
         return {'ID': self.ID, 'namn': namn, 'persnum': persnum, 'kon': kon,
-                'email': email, 'adress': adress, 'postnum': postnum, 'ort': ort,
-                'grupp': grupp, 'betalt': betalt, 'kommentar': kommentar}
+                'email': email, 'telefon': telefon, 'adress': adress,
+                'postnum': postnum, 'ort': ort, 'grupp': grupp,
+                'betalt': betalt, 'kommentar': kommentar,'namn_mm': namn_mm,
+                'email_mm': email_mm, 'telefon_mm': telefon_mm}
 
 
 class RF_Entry(QtWidgets.QMainWindow):
