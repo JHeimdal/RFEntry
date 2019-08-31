@@ -221,14 +221,14 @@
         <widget class="QTextEdit" name="kommentar"/>
        </item>
        <item row="5" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="telefon_lb">
          <property name="text">
           <string>Telefon:</string>
          </property>
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="telefon"/>
        </item>
       </layout>
      </item>
@@ -282,11 +282,17 @@
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+       <property name="centerButtons">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -299,7 +305,7 @@
   <tabstop>pers_num</tabstop>
   <tabstop>kon</tabstop>
   <tabstop>email</tabstop>
-  <tabstop>lineEdit</tabstop>
+  <tabstop>telefon</tabstop>
   <tabstop>adress</tabstop>
   <tabstop>post_num</tabstop>
   <tabstop>ort</tabstop>

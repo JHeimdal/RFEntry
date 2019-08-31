@@ -12,6 +12,7 @@ from serial.serialutil import SerialException
 import sqlite3
 import time
 import sys
+import re
 
 # import os
 # Export CSV dialog
@@ -114,8 +115,8 @@ class MembersDB:
     def addMember(self, member=None):
         if member:
             sql = """
-            INSERT INTO members (ID,namn,persnum,kon,email,adress,postnum,ort,grupp,betalt,kommentar,namn_mm,email_mm,telefon_mm)
-            VALUES ({ID},'{namn}','{persnum}','{kon}','{email}','{adress}','{postnum}','{ort}','{grupp}',{betalt},'{kommentar}','{namn_mm}','{email_mm}','{telefon_mm}');
+            INSERT INTO members (ID,namn,persnum,kon,email,telefon,adress,postnum,ort,grupp,betalt,kommentar,namn_mm,email_mm,telefon_mm)
+            VALUES ({ID},'{namn}','{persnum}','{kon}','{email}','{telefon}','{adress}','{postnum}','{ort}','{grupp}',{betalt},'{kommentar}','{namn_mm}','{email_mm}','{telefon_mm}');
             """.format(**member)
             self.curs_M.execute(sql)
             self.conn_M.commit()
@@ -124,7 +125,7 @@ class MembersDB:
         if member:
             sql = """
             UPDATE members
-            SET namn='{namn}',persnum='{persnum}',kon='{kon}',email='{email}',telefon='{telefon}',adress='{adress}',postnum='{postnum}',ort='{ort}',grupp='{grupp}',betalt={betalt},kommentar='{kommentar},namn_mm='{namn_mm}',email_mm='{email_mm}',telefon_mm='{telefon_mm}'
+            SET namn='{namn}',persnum='{persnum}',kon='{kon}',email='{email}',telefon='{telefon}',adress='{adress}',postnum='{postnum}',ort='{ort}',grupp='{grupp}',betalt={betalt},kommentar='{kommentar}',namn_mm='{namn_mm}',email_mm='{email_mm}',telefon_mm='{telefon_mm}'
             WHERE ID={ID};
             """.format(**member)
             self.curs_M.execute(sql)
@@ -139,7 +140,7 @@ class MembersDB:
             return True
 
     def fetchMember(self, ID):
-        sql = "SELECT namn,persnum,kon,email,telefon,adress,postnum,ort,grupp,betalt,kommentar namn_mm email_mm telefon_mm FROM members where ID={}".format(ID)
+        sql = "SELECT namn,persnum,kon,email,telefon,adress,postnum,ort,grupp,betalt,kommentar,namn_mm,email_mm,telefon_mm FROM members where ID={}".format(ID)
         keys = ['namn','persnum','kon','email','telefon','adress','postnum','ort','grupp','betalt','kommentar','namn_mm','email_mm','telefon_mm']
         val = self.curs_M.execute(sql).fetchone()
         return dict(zip(keys, val))
@@ -166,12 +167,24 @@ class AddMember(QtWidgets.QDialog):
         self.ui.ID_val.setText(str(ID))
         self.ID = ID
         self.ui.pers_num.editingFinished.connect(self.checkAge)
+        self.ui.namn.editingFinished.connect(self.validData)
+        self.ui.pers_num.editingFinished.connect(self.validData)
+        self.ui.email.editingFinished.connect(self.validData)
+        self.ui.telefon.editingFinished.connect(self.validData)
+        self.ui.adress.editingFinished.connect(self.validData)
+        self.ui.post_num.editingFinished.connect(self.validData)
+        self.ui.ort.editingFinished.connect(self.validData)
+        self.ui.namn_mm.editingFinished.connect(self.validData)
+        self.ui.telefon_mm.editingFinished.connect(self.validData)
+        self.ui.email_mm.editingFinished.connect(self.validData)
+        self.ui.group.currentIndexChanged.connect(self.validData)
         if member:
             self.ui.namn.setText(member['namn'])
             self.ui.pers_num.setText(member['persnum'])
             idx = self.ui.kon.findText(member['kon'])
             self.ui.kon.setCurrentIndex(idx)
             self.ui.email.setText(member['email'])
+            self.ui.telefon.setText(member['telefon'])
             self.ui.adress.setText(member['adress'])
             self.ui.post_num.setText(member['postnum'])
             self.ui.ort.setText(member['ort'])
@@ -180,11 +193,50 @@ class AddMember(QtWidgets.QDialog):
             self.ui.betalt.setChecked(member['betalt'])
             self.ui.kommentar.setText(member['kommentar'])
             if member['namn_mm']:
+                self.ui.malsman.setEnabled(True)
                 self.ui.namn_mm.setText(member['namn_mm'])
                 self.ui.email_mm.setText(member['email_mm'])
                 self.ui.telefon_mm.setText(member['telefon_mm'])
 
+    def validData(self):
+        if self.ui.malsman.isEnabled():
+            if self.ui.namn.text() and self.ui.pers_num.text() and\
+               self.ui.email.text() and self.ui.telefon.text() and\
+               self.ui.adress.text() and self.ui.post_num.text() and\
+               self.ui.ort.text() and self.ui.namn_mm.text() and\
+               self.ui.email_mm.text() and self.ui.telefon_mm.text() and self.ui.group.currentText():
+               self.ui.buttonBox.setEnabled(True)
+               return
+        elif self.ui.namn.text() and self.ui.pers_num.text() and\
+             self.ui.email.text() and self.ui.telefon.text() and\
+             self.ui.adress.text() and self.ui.post_num.text() and\
+             self.ui.ort.text() and self.ui.group.currentText():
+           self.ui.buttonBox.setEnabled(True)
+           return
+        #    if self.ui.malsman.isEnabled()
+        # self.ui.namn_mm.text()
+        # self.ui.telefon_mm.text()
+        # self.ui.email_mm.text()
+
     def checkAge(self):
+        """ Kolla om giltigt personnummer, samt kolla kön och ålder """
+        pnr = self.ui.pers_num.text()
+        digits = [int(d) for d in re.sub(r'\D', '', pnr)][-10:]
+        if len(digits) != 10:
+            diag = QMB.warning(self,"Ogiltigt personnummer",pnr)
+            self.ui.pers_num.clear()
+            return
+        even_digitsum = sum(x if x < 5 else x - 9 for x in digits[::2])
+        valid = 0 == sum(digits, even_digitsum) % 10
+        if not valid:
+            diag = QMB.warning(self,"Ogiltigt personnummer",pnr)
+            self.ui.pers_num.clear()
+            return
+        if digits[-2]%2==0:
+            self.ui.kon.setCurrentIndex(1)
+        else:
+            self.ui.kon.setCurrentIndex(0)
+
         bday = dt.datetime.strptime(self.ui.pers_num.text().split('-')[0],"%Y%m%d")
         tday = dt.datetime.today()
         age = int((tday-bday).days/365)
@@ -192,7 +244,6 @@ class AddMember(QtWidgets.QDialog):
             self.ui.malsman.setEnabled(True)
         else:
             self.ui.malsman.setDisabled(True)
-
 
     def getMember(self):
         namn = self.ui.namn.text()
@@ -302,21 +353,25 @@ class RF_Entry(QtWidgets.QMainWindow):
     #         return None
 
     def OnCode(self, code):
+        if code < 0 or code > 400:
+            return
         if self.memberDB.isMember(code):
+            member = self.memberDB.fetchMember(code)
             IDS=[]
             for row in range(self.ui.reportWindow.rowCount()):
                 IDS.append(int(self.ui.reportWindow.verticalHeaderItem(row).text()))
             if code in IDS:
                 return
-            tpass = self.ui.tgroup.currentText()
-            n, g, b = self.memberDB.logVisit(code, tpass)
+            if member['grupp'] == "Tävling":
+                n, g, b = self.memberDB.logVisit(code, "Tävling")
+            else:
+                n, g, b = self.memberDB.logVisit(code, self.ui.tgroup.currentText())
             row = self.ui.reportWindow.rowCount()
             self.ui.reportWindow.insertRow(row)
             self.ui.reportWindow.setVerticalHeaderItem(row, QTableWidgetItem(str(code)))
             self.ui.reportWindow.setItem(row, 0, QTableWidgetItem(g))
             self.ui.reportWindow.setItem(row, 1, QTableWidgetItem("Ja" if b else "Nej"))
             self.ui.reportWindow.setItem(row, 2, QTableWidgetItem(n))
-            # ret = self.memberDB.logVisit(code)
         else:
             diag = AddMember(code)
             if diag.exec_():
